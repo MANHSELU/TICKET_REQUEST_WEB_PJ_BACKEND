@@ -1,7 +1,6 @@
 const ALLOWED_EMAIL_DOMAIN = require("../../constants/email.constant");
 
-const validateRegister = async (data) => {
-    const { fullName, phone, email, password, confirmPass } = data;
+const validateRegister = async (fullName, phone, email, password, confirmPass) => {
     if( !fullName || !phone || !email || !password || !confirmPass ) {
         throw {
             status: 404,
@@ -33,6 +32,15 @@ const validateRegister = async (data) => {
             message: "Mật khẩu xác nhận không khớp, vui lòng thử lại"
         };
     };
-}
+};
 
-module.exports = { validateRegister };
+const validateLogin = async (email, password ) => {
+    if(!email || !password ) {
+        throw {
+            status: 400,
+            message: "Vui lòng nhập đầy đủ email và mật khẩu"
+        };
+    };
+};
+
+module.exports = { validateRegister, validateLogin };
