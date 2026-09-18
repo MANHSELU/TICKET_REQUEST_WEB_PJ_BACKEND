@@ -2,7 +2,9 @@ const express = require("express");
 const route = express.Router();
 const authController = require("../../controllers/auth/auth.controller");
 
-route.post("/requester", authController.registerController);
-route.patch("/requester", authController.verifyEmailByOtpController);
+route.post("/register", authController.registerController);
+route.patch("/verify", authController.verifyEmailByOtpController);
+route.post("/sendOtp", authController.resendOtpController);
+route.post("/login", authController.loginController);
 
 module.exports = route;
