@@ -26,4 +26,22 @@ const validateChangePass = async (userId, oldPassword, newPassword, confirmPassw
     };
 };
 
-module.exports = { validateChangePass }
+const validateViewProfile = async (userId) => {
+    if(!userId) {
+        throw {
+            status: 404,
+            message: "Các trường thông tin là bắt buộc"
+        };
+    };
+};
+
+const validateUpdateProfile = async (userId, fullName, phone, fileBuffer) => {
+    if(!userId || !fullName || !phone || !fileBuffer) {
+        throw {
+            status: 404,
+            message: "Các trường thông tin là bắt buộc"
+        };
+    };
+};
+
+module.exports = { validateChangePass, validateViewProfile, validateUpdateProfile }
