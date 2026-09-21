@@ -1,10 +1,16 @@
 const User = require("../../model/users.model");
 const AccountVerification = require ("../../model/accountVerification.model");
 const RefreshToken = require("../../model/refreshToken.model");
+const { where } = require("sequelize");
 
 const findByEmail = async (email) => {
     return await User.findOne({ where: { email: email } });
 };
+
+const findByUserId = async (userId) => {
+    return await User.findOne({ where: {id: userId } });
+};
+
 const createUser = async (data) => {
     return await User.create(data); 
 };
@@ -49,5 +55,9 @@ const deleteRefreshTokenByUserId = async (userId) => {
     return await RefreshToken.destroy({ where: { userId } });
 };
 
+const updatePass = async (userId, password) => {
+    return await User.update({ password }, { where: { id :userId } });
+};
 
-module.exports = { findByEmail, createUser, createOtp, findByUserIdAndOtp, deleteOtpById, activeUser, findOtpByUserId,  deleteOtpByUserId, upsertRefreshToken, findRefreshToken, deleteRefreshTokenByUserId};
+module.exports = { findByEmail, createUser, createOtp, findByUserIdAndOtp, deleteOtpById, activeUser, findOtpByUserId,  
+    deleteOtpByUserId, upsertRefreshToken, findRefreshToken, deleteRefreshTokenByUserId, updatePass, findByUserId };

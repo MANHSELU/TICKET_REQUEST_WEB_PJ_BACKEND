@@ -1,5 +1,5 @@
-const { register, verifyEmailByOtp, resendOtp, login } = require ("../../services/auth/auth.service");
-const { validateRegister,validateLogin } = require ("../../validations/auth/auth.validation");
+const { register, verifyEmailByOtp, resendOtp, login, forgotPass, verifyResetOtp, resetPassword } = require ("../../services/auth/auth.service");
+const { validateRegister, validateLogin, validateResetPass } = require ("../../validations/auth/auth.validation");
 
 const registerController = async (req, res) => {
     try {
@@ -57,4 +57,47 @@ const loginController = async (req, res) => {
     };
 };
 
-module.exports = { registerController, verifyEmailByOtpController, resendOtpController, loginController };
+const forgotPassController = async (req,res) => {
+    try {
+        const { email } = req.body;
+        await forgotPass(email);
+        return res.status(200).json({
+            message: "Vui lòng truy cập mail để nhận mã cập nhật mật khẩu"
+        });
+    } catch (error) {
+        const status = error.status || 500;
+        return res.status(status).json({ message: error.message || "Lỗi hệ thống"});
+    };
+};
+
+const verifyResetOtpController = async (req, res) => {
+    try {
+        const { email, otp } = req.body;
+        await verifyResetOtp(email, otp);
+        return res.status(200).json({
+            message: "Xác thực OTP thành công"
+        });
+    } catch (error) {
+        const status = error.status || 500;
+        return res.status(status).json({ message: error.message || "Lỗi hệ thống"});
+    };
+};
+
+const resetPasswordController = async (req, res) => {
+    try {
+        const { email, otp, newPassword, confirmPassword } = req.body;
+        await validateResetPass(email, otp, newPassword, confirmPassword);
+        await resetPassword(email, otp, newPassword);
+        return res.status(200).json({
+            message: "Đặt lại mật khẩu thành công"
+        });
+    } catch (error) {
+        const status = error.status || 500;
+        return res.status(status).json({ message: error.message || "Lỗi hệ thống"});
+    };
+};
+
+
+
+module.exports = { registerController, verifyEmailByOtpController, resendOtpController,
+    loginController, forgotPassController, verifyResetOtpController, resetPasswordController };

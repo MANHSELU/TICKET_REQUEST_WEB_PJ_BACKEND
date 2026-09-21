@@ -34,7 +34,7 @@ const validateRegister = async (fullName, phone, email, password, confirmPass) =
     };
 };
 
-const validateLogin = async (email, password ) => {
+const validateLogin = async (email, password) => {
     if(!email || !password ) {
         throw {
             status: 400,
@@ -43,4 +43,34 @@ const validateLogin = async (email, password ) => {
     };
 };
 
-module.exports = { validateRegister, validateLogin };
+const validateResetPass = async (email, otp, newPassword, confirmPassword) => {
+    if(!email || !otp || !newPassword || !confirmPassword) {
+        throw {
+            status: 400,
+            message: "Các trường thông tin là bắt buộc"
+        };
+    };
+    if(newPassword.length < 8) {
+        throw {
+            status: 400,
+            message: "Mật khẩu phải có ít nhất 8 kí tự"
+        };
+    };
+    const specialRegex = /[!@#$%^&*()<>?":{}|<>]/
+    if(!specialRegex.test(newPassword)) {
+        throw {
+            status: 400,
+            message: "Mật khẩu phải có ít nhất kí tự đặc biệt"
+        };
+    };
+    if(!(confirmPassword === newPassword)) {
+        throw {
+            status: 400,
+            message: "Mật khẩu xác nhận không khớp, vui lòng thử lại"
+        };
+    };
+};
+
+
+
+module.exports = { validateRegister, validateLogin, validateResetPass };
