@@ -111,4 +111,50 @@ const login = async (email, password) => {
     return { accessToken, refreshToken };   
 };
 
-module.exports = { register, verifyEmailByOtp, resendOtp, login};
+const forgotPass = async (email) => {
+    const user = await authRepository.findByEmail(email);
+    if(!user) {
+        throw {
+            status: 404,
+            message: "Không tìm thấy người dùng"
+        };
+    };
+    const oldOtp = await authRepository.findOtpByUserId(user.id);
+    if(oldOtp) {
+        await authRepository.deleteOtpById(oldOtp.id);
+    };
+    const newOtp = crypto.randomInt(100000, 1000000).toString();
+    const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
+    await authRepository.createOtp({ userId: user.id, otp: newOtp, expiresAt });
+    await mailService.sendOtpMail(email, newOtp);
+};
+
+const verifyResetOtp = async (email, otp) => {
+    const user = await authRepository.findByEmail(email);
+    if (!user) {
+        throw { status: 404, message: "Không tìm thấy người dùng" };
+    };
+    const verification = await authRepository.findByUserIdAndOtp(user.id, otp);
+    if (!verification || verification.expiresAt < new Date()) {
+        throw { status: 400, message: "Mã OTP không hợp lệ" };
+    };
+};
+
+const resetPassword = async (email, otp, newPassword) => {
+    const user = await authRepository.findByEmail(email);
+    if(!user) {
+        throw {
+        status: 404,
+        message: "Không tìm thấy người dùng"
+        };
+    };
+    const verification = await authRepository.findByUserIdAndOtp(user.id, otp);
+    if (!verification || verification.expiresAt < new Date()) {
+        throw { status: 400, message: "Mã OTP không hợp lệ" };
+    };
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await authRepository.updatePass(user.id, hashedPassword);
+};
+
+
+module.exports = { register, verifyEmailByOtp, resendOtp, login, forgotPass, verifyResetOtp, resetPassword };

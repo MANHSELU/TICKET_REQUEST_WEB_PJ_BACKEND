@@ -13,6 +13,7 @@ const generateRefreshToken = (payload) => {
 };
 
 const verifyAccessToken = (token) => {
+    console.log("verifyToken: ", token);
     return jwt.verify(token, process.env.JWT_ACCESS_SECRET);
 };
 
