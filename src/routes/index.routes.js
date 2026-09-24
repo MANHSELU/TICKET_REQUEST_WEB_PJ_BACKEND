@@ -1,6 +1,8 @@
 const authRoutes = require("../routes/auth/auth.routes");
 const commonRoute = require("../routes/common/profileManagement.routes");
-const { authenticate } = require("../middlewares/auth.middleware");
+const adminRoute = require("./admin/admin.routes");
+const { authenticate, authorizeRoles } = require("../middlewares/auth.middleware");
+const ROLE = require("../constants/role.constant");
 
 module.exports = [
     {
@@ -11,5 +13,10 @@ module.exports = [
         prefix: "/api/common",
         middlewares: [authenticate],
         router: commonRoute,
+    },
+    {
+        prefix: "/api/admin",
+        middlewares: [authenticate, authorizeRoles(ROLE.ADMIN)],
+        router: adminRoute,
     },
 ];

@@ -46,5 +46,6 @@ const updateProfile = async (userId, fullName, phone, fileBuffer) => {
     };
     const updatedProfile = await profileManagementRepository.updateProfile(userId, fullName, phone, imgUrl);
     return updatedProfile;
-}
+};
+
 module.exports = { changePassword, viewProfile, updateProfile }
