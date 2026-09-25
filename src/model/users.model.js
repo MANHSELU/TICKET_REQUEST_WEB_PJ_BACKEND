@@ -38,6 +38,7 @@ const User = sequelize.define(
       allowNull: false,
       defaultValue: 1,
     },
+    
     imgUrl: {
       type: DataTypes.STRING(255),
       allowNull: true,
@@ -49,6 +50,16 @@ const User = sequelize.define(
       allowNull: false,
       defaultValue: false,
       field: "is_active",
+    },
+
+    teamId: {
+      type: DataTypes.BIGINT.UNSIGNED,
+      allowNull: true,
+      field: "team_id",
+      references: {
+        model: "support_teams",
+        key: "id",
+      },
     },
   },
   {
