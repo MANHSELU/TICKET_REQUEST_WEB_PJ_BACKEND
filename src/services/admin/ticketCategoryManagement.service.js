@@ -1,9 +1,10 @@
 const ticketCategoryRepository = require("../../repositories/admin/ticketCategoryManagement.repository");
 
-const createTicketCategory = async (categoryName, description) => {
+const createTicketCategory = async (categoryName, description, defaultPriority) => {
     const category = await ticketCategoryRepository.createTicketCategory({
         category_name: categoryName,
         description: description,
+        defaultPriority: defaultPriority,
     });
     return category;
 };
@@ -13,10 +14,11 @@ const findAllTicketCategory = async () => {
     return categories;
 };
 
-const updateTicketCategory = async (categoryId, categoryName, description) => {
+const updateTicketCategory = async (categoryId, categoryName, description, defaultPriority) => {
     const category = await ticketCategoryRepository.updateTicketCategory(categoryId, {
         category_name: categoryName,
         description: description,
+        defaultPriority: defaultPriority,
     });
     return category;
 };

@@ -22,6 +22,13 @@ const Ticket_Category = sequelize.define(
       field: "description",
     },
 
+    defaultPriority: {
+      type: DataTypes.STRING(20),
+      allowNull: false,
+      defaultValue: "MEDIUM",
+      field: "default_priority",
+    },
+
     isActive: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
