@@ -16,4 +16,22 @@ const validateTicketDetail = (ticketId, requesterId) => {
     };
 };
 
-module.exports = { validateCreateTicket, validateTicketDetail };
+const validateSendMessage = (ticketId, senderId, message) => {
+    if (!ticketId || !senderId || !message) {
+        throw {
+            status: 400,
+            message: "Thiếu thông tin yêu cầu"
+        };
+    };
+};
+
+const validateFindMessage = (ticketId, senderId) => {
+    if (!ticketId || !senderId) {
+        throw {
+            status: 400,
+            message: "Thiếu thông tin yêu cầu"
+        };
+    };
+};
+
+module.exports = { validateCreateTicket, validateTicketDetail, validateSendMessage, validateFindMessage };

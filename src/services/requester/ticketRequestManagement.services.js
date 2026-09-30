@@ -37,4 +37,27 @@ const findAllTicketCategory = async () => {
     return await ticketRequestManagementRepository.findAllTicketCategory();
 };
 
-module.exports = { createTicketService, findMyTickets, findMyTicketDetail, findAllItService, findAllTicketCategory };
+const sendMessage = async (ticketId, requesterId, message) => {
+    const ticket = await ticketRequestManagementRepository.findByIdAndRequesterId(ticketId, requesterId);
+    if (!ticket) {
+        throw { status: 404, message: "Không tìm thấy yêu cầu hỗ trợ" };
+    };
+    if (ticket.status === "CLOSED") {
+        throw { status: 400, message: "Yêu cầu này đã đóng, không thể gửi tin nhắn" };
+    };
+    return await ticketRequestManagementRepository.sendMessage({
+        ticketId,
+        senderId: requesterId,
+        message,
+    });
+};
+
+const findMessage = async (ticketId, requesterId) => {
+    const ticket = await ticketRequestManagementRepository.findByIdAndRequesterId(ticketId, requesterId);
+    if (!ticket) {
+        throw { status: 404, message: "Không tìm thấy yêu cầu hỗ trợ" };
+    };
+    return await ticketRequestManagementRepository.findMessage(ticketId);
+};
+
+module.exports = { createTicketService, findMyTickets, findMyTicketDetail, findAllItService, findAllTicketCategory, sendMessage, findMessage };

@@ -1,5 +1,5 @@
-const { validateCreateTicket, validateTicketDetail } = require("../../validations/requester/ticketRequestManagement.validation");
-const { createTicketService, findMyTickets, findMyTicketDetail, findAllItService, findAllTicketCategory } = require("../../services/requester/ticketRequestManagement.services");
+const { validateCreateTicket, validateTicketDetail, validateSendMessage, validateFindMessage } = require("../../validations/requester/ticketRequestManagement.validation");
+const { createTicketService, findMyTickets, findMyTicketDetail, findAllItService, findAllTicketCategory, sendMessage, findMessage } = require("../../services/requester/ticketRequestManagement.services");
 
 const createTicketController = async (req, res) => {
     try {
@@ -58,4 +58,30 @@ const findTicketCategoryController = async (req, res) => {
     };
 };
 
-module.exports = { createTicketController, findMyTicketsController, findMyTicketDetailController, findItServiceController, findTicketCategoryController };
+const sendMessageController = async (req, res) => {
+    try {
+        const { userId } = req.user;
+        const { ticketId, message } = req.body;
+        await validateSendMessage(ticketId, userId, message);
+        await sendMessage(ticketId, userId, message);
+        return res.status(201).json({ message: "Gửi tin nhắn thành công" });
+    } catch (error) {
+        const status = error.status || 500;
+        return res.status(status).json({ message: error.message || "Lỗi hệ thống" });
+    };
+};
+
+const findMessageController = async (req, res) => {
+    try {
+        const { userId } = req.user;
+        const { ticketId } = req.params;
+        await validateFindMessage(ticketId, userId);
+        const messages = await findMessage(ticketId, userId);
+        return res.status(200).json({ message: "Lấy đoạn chat thành công", data: messages });
+    } catch (error) {
+        const status = error.status || 500;
+        return res.status(status).json({ message: error.message || "Lỗi hệ thống" });
+    };
+};
+
+module.exports = { createTicketController, findMyTicketsController, findMyTicketDetailController, findItServiceController, findTicketCategoryController, sendMessageController, findMessageController };
