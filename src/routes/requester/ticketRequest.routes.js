@@ -8,4 +8,7 @@ route.get("/tickets/:ticketId", ticketRequestController.findMyTicketDetailContro
 route.get("/services", ticketRequestController.findItServiceController);
 route.get("/ticket-categories", ticketRequestController.findTicketCategoryController);
 
+route.post("/messages", ticketRequestController.sendMessageController);
+route.get("/tickets/:ticketId/messages", ticketRequestController.findMessageController);
+
 module.exports = route;
