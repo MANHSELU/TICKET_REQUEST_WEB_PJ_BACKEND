@@ -1,5 +1,5 @@
 const { validateCreateTicket, validateTicketDetail } = require("../../validations/requester/ticketRequestManagement.validation");
-const { createTicketService, findMyTickets, findMyTicketDetail } = require("../../services/requester/ticketRequestManagement.services");
+const { createTicketService, findMyTickets, findMyTicketDetail, findAllItService, findAllTicketCategory } = require("../../services/requester/ticketRequestManagement.services");
 
 const createTicketController = async (req, res) => {
     try {
@@ -38,4 +38,24 @@ const findMyTicketDetailController = async (req, res) => {
     };
 };
 
-module.exports = { createTicketController, findMyTicketsController, findMyTicketDetailController };
+const findItServiceController = async (req, res) => {
+    try {
+        const itServices = await findAllItService();
+        return res.status(200).json({ message: "Lấy danh sách dịch vụ thành công", data: itServices });
+    } catch (error) {
+        const status = error.status || 500;
+        return res.status(status).json({ message: error.message || "Lỗi hệ thống" });
+    };
+};
+
+const findTicketCategoryController = async (req, res) => {
+    try {
+        const categories = await findAllTicketCategory();
+        return res.status(200).json({ message: "Lấy danh sách danh mục thành công", data: categories });
+    } catch (error) {
+        const status = error.status || 500;
+        return res.status(status).json({ message: error.message || "Lỗi hệ thống" });
+    };
+};
+
+module.exports = { createTicketController, findMyTicketsController, findMyTicketDetailController, findItServiceController, findTicketCategoryController };

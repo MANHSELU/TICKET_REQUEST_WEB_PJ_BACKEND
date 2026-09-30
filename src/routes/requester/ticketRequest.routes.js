@@ -5,5 +5,7 @@ const ticketRequestController = require("../../controllers/requester/ticketReque
 route.post("/tickets", ticketRequestController.createTicketController);
 route.get("/tickets", ticketRequestController.findMyTicketsController);
 route.get("/tickets/:ticketId", ticketRequestController.findMyTicketDetailController);
+route.get("/services", ticketRequestController.findItServiceController);
+route.get("/ticket-categories", ticketRequestController.findTicketCategoryController);
 
 module.exports = route;

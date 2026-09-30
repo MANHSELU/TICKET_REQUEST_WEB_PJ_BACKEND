@@ -1,4 +1,6 @@
 const Ticket = require("../../model/ticket.model");
+const ItService = require("../../model/itService.model");
+const TicketCategory = require("../../model/ticketCategory.model");
 
 const createTicket = async (data) => {
     return await Ticket.create(data);
@@ -12,4 +14,12 @@ const findByIdAndRequesterId = async (ticketId, requesterId) => {
     return await Ticket.findOne({ where: { id: ticketId, requesterId } });
 };
 
-module.exports = { createTicket, findByRequesterId, findByIdAndRequesterId }
+const findAllItService = async () => {
+    return await ItService.findAll();
+};
+
+const findAllTicketCategory = async () => {
+    return await TicketCategory.findAll();
+};
+
+module.exports = { createTicket, findByRequesterId, findByIdAndRequesterId, findAllItService, findAllTicketCategory }
