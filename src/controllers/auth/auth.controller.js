@@ -1,5 +1,5 @@
-const { register, verifyEmailByOtp, resendOtp, login, forgotPass, verifyResetOtp, resetPassword } = require ("../../services/auth/auth.service");
-const { validateRegister, validateLogin, validateResetPass } = require ("../../validations/auth/auth.validation");
+const { register, verifyEmailByOtp, resendOtp, login, forgotPass, verifyResetOtp, resetPassword, refreshAccessToken } = require ("../../services/auth/auth.service");
+const { validateRegister, validateLogin, validateResetPass, validateRefreshToken } = require ("../../validations/auth/auth.validation");
 
 const registerController = async (req, res) => {
     try {
@@ -99,5 +99,20 @@ const resetPasswordController = async (req, res) => {
 
 
 
+const refreshTokenController = async (req, res) => {
+    try {
+        const { refreshToken } = req.body;
+        await validateRefreshToken(refreshToken);
+        const data = await refreshAccessToken(refreshToken);
+        return res.status(200).json({
+            message: "Làm mới access token thành công",
+            data,
+        });
+    } catch (error) {
+        const status = error.status || 500;
+        return res.status(status).json({ message: error.message || "Lỗi hệ thống"});
+    };
+};
+
 module.exports = { registerController, verifyEmailByOtpController, resendOtpController,
-    loginController, forgotPassController, verifyResetOtpController, resetPasswordController };
+    loginController, forgotPassController, verifyResetOtpController, resetPasswordController, refreshTokenController };
