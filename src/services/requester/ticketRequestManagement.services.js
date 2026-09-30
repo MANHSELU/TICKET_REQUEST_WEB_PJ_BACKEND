@@ -29,4 +29,12 @@ const findMyTicketDetail = async (ticketId, requesterId) => {
     return ticket;
 };
 
-module.exports = { createTicketService, findMyTickets, findMyTicketDetail };
+const findAllItService = async () => {
+    return await ticketRequestManagementRepository.findAllItService();
+};
+
+const findAllTicketCategory = async () => {
+    return await ticketRequestManagementRepository.findAllTicketCategory();
+};
+
+module.exports = { createTicketService, findMyTickets, findMyTicketDetail, findAllItService, findAllTicketCategory };
