@@ -68,4 +68,4 @@ const findMessage = async (ticketId, senderId) => {
     return await ticketManagementRepository.findMessage(ticketId, senderId);
 };
 
-module.exports = { findAllTicket, findTicketDetail, acceptTicket, closeTicket, sendMessage, findMessage};
+module.exports = { findAllTicket, findTicketDetail, acceptTicket, closeTicket, sendMessage, findMessage };
