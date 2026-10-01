@@ -73,4 +73,13 @@ const validateResetPass = async (email, otp, newPassword, confirmPassword) => {
 
 
 
-module.exports = { validateRegister, validateLogin, validateResetPass };
+const validateRefreshToken = async (refreshToken) => {
+    if (!refreshToken) {
+        throw {
+            status: 400,
+            message: "Thiếu refresh token"
+        };
+    };
+};
+
+module.exports = { validateRegister, validateLogin, validateResetPass, validateRefreshToken };
