@@ -157,4 +157,32 @@ const resetPassword = async (email, otp, newPassword) => {
 };
 
 
-module.exports = { register, verifyEmailByOtp, resendOtp, login, forgotPass, verifyResetOtp, resetPassword };
+const refreshAccessToken = async (refreshToken) => {
+    let decoded;
+    try {
+        decoded = jwtConfig.verifyRefreshToken(refreshToken);
+    } catch {
+        throw {
+            status: 401,
+            message: "Refresh token không hợp lệ hoặc đã hết hạn"
+        };
+    };
+    const stored = await authRepository.findRefreshToken(decoded.userId, refreshToken);
+    if (!stored || stored.expiresAt < new Date()) {
+        throw {
+            status: 401,
+            message: "Refresh token không hợp lệ hoặc đã hết hạn"
+        };
+    };
+    const user = await authRepository.findByUserId(decoded.userId);
+    if (!user) {
+        throw {
+            status: 404,
+            message: "Không tìm thấy người dùng"
+        };
+    };
+    const accessToken = jwtConfig.generateAccessToken({ userId: user.id, role: user.role });
+    return { accessToken };
+};
+
+module.exports = { register, verifyEmailByOtp, resendOtp, login, forgotPass, verifyResetOtp, resetPassword, refreshAccessToken };

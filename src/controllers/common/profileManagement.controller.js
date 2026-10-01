@@ -19,7 +19,7 @@ const viewProfileController = async (req, res) => {
         const { userId } = req.user;
         await validateViewProfile(userId);
         const userProfile = await viewProfile(userId);
-        return res.status(200).json({ userProfile });
+        return res.status(200).json({ message: "Lấy thông tin hồ sơ thành công", data: userProfile });
     } catch (error) {
         const status = error.status || 500;
         return res.status(status).json({ message: error.message || "Lỗi hệ thống"});

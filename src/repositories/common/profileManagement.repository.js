@@ -10,7 +10,7 @@ const updatePass = async (userId, password) => {
 };
 
 const findInformationByUserId = async (userId) => {
-    return await User.findOne({ attributes: ["id", "fullName", "phone", "email", "role", "imgUrl", "isActive"], where: { id: userId }  });
+    return await User.findOne({ attributes: ["id", "fullName", "phone", "email", "role", "imgUrl", "isActive", "createdAt"], where: { id: userId }  });
 };
 
 const updateProfile = async (userId, fullName, phone, imgUrl) => {

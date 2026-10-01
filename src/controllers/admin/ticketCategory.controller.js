@@ -3,9 +3,9 @@ const { createTicketCategory, findAllTicketCategory, updateTicketCategory, searc
 
 const createTicketCategoryController = async (req, res) => {
     try {
-        const { categoryName, description } = req.body;
-        await validateCreateTicketCategory(categoryName, description);
-        await createTicketCategory(categoryName, description);
+        const { categoryName, description, defaultPriority } = req.body;
+        await validateCreateTicketCategory(categoryName, description, defaultPriority);
+        await createTicketCategory(categoryName, description, defaultPriority);
         return res.status(201).json({ message: "Tạo mới danh mục thành công" });
     } catch (error) {
         const status = error.status || 500;
@@ -26,10 +26,10 @@ const findTicketCategoryController = async (req, res) => {
 const updateTicketCategoryController = async (req, res) => {
     try {
         const { categoryId } = req.params;
-        const { categoryName, description } = req.body;
-        await validateUpdateTicketCategory(categoryId, categoryName, description);
-        const category = await updateTicketCategory(categoryId, categoryName, description);
-        return res.status(200).json({ message: "Cập nhật danh mục thành công" });
+        const { categoryName, description, defaultPriority } = req.body;
+        await validateUpdateTicketCategory(categoryId, categoryName, description, defaultPriority);
+        const category = await updateTicketCategory(categoryId, categoryName, description, defaultPriority);
+        return res.status(200).json({ message: "Cập nhật danh mục thành công", data: category });
     } catch (error) {
         const status = error.status || 500;
         return res.status(status).json({ message: error.message || "Lỗi hệ thống" });

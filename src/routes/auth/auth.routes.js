@@ -9,5 +9,6 @@ route.post("/login", authController.loginController);
 route.post("/forgot-password", authController.forgotPassController);
 route.post("/verify-reset-otp", authController.verifyResetOtpController);
 route.post("/reset-password", authController.resetPasswordController);
+route.post("/refresh-token", authController.refreshTokenController);
 
 module.exports = route;

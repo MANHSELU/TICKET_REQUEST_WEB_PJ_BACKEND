@@ -23,4 +23,9 @@ const searchTicketCategory = async (keyword) => {
     });
 };
 
-module.exports = { createTicketCategory, getTicketCategory, updateTicketCategory, searchTicketCategory };
+const findById = async (categoryId) => {
+    return await TicketCategory.findOne({ where: { id: categoryId } });
+};
+
+
+module.exports = { createTicketCategory, getTicketCategory, updateTicketCategory, searchTicketCategory, findById };

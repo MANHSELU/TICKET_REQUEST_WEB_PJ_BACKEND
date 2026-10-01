@@ -35,8 +35,8 @@ const validateViewProfile = async (userId) => {
     };
 };
 
-const validateUpdateProfile = async (userId, fullName, phone, fileBuffer) => {
-    if(!userId || !fullName || !phone || !fileBuffer) {
+const validateUpdateProfile = async (userId, fullName, phone) => {
+    if(!userId || !fullName || !phone) {
         throw {
             status: 404,
             message: "Các trường thông tin là bắt buộc"
