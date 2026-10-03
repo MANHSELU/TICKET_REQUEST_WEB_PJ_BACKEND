@@ -1,12 +1,15 @@
 const ItServices = require ("../../model/itService.model");
+const ItServiceCategory = require("../../model/itServiceCategory.model");
 const { Op } = require("sequelize");
 
-const createItService = async (data) => { 
+const createItService = async (data) => {
     return await ItServices.create(data);
 };
 
 const getItService = async () => {
-    return await ItServices.findAll();
+    return await ItServices.findAll({
+        include: { model: ItServiceCategory, as: "category" },
+    });
 };
 
 const updateItService = async (serviceId, data) => {
@@ -20,6 +23,7 @@ const searchItService = async (keyword) => {
                 [Op.like]: `%${keyword}%`,
             },
         },
+        include: { model: ItServiceCategory, as: "category" },
     });
 };
 

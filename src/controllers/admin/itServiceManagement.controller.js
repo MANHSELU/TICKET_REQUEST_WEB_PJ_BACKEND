@@ -3,9 +3,9 @@ const { createItService, findAllItService, updateItService, searchItService } = 
 
 const createItServiceController = async (req, res) => {
     try {
-        const { serviceName, description } = req.body;
+        const { serviceName, description, itServiceCategoryId } = req.body;
         await validateCreateItService(serviceName, description);
-        await createItService(serviceName, description); 
+        await createItService(serviceName, description, itServiceCategoryId);
         return res.status(201).json({ message: "Tạo mới dịch vụ thành công" });
     } catch (error) {
         const status = error.status || 500; 
@@ -26,9 +26,9 @@ const findItServiceController = async (req, res) => {
 const updateItServiceController = async (req, res) => {
     try {
     const { serviceId } = req.params;
-    const { serviceName, description } = req.body;
+    const { serviceName, description, isActive, itServiceCategoryId } = req.body;
     await validateUpdateItService(serviceId, serviceName, description);
-    await updateItService( serviceId, serviceName, description );
+    await updateItService( serviceId, serviceName, description, isActive, itServiceCategoryId );
     return res.status(201).json({ message: "Cập nhật thông tin dịch vụ thành công" });
     } catch (error) {
         const status = error.status || 500; 

@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../configs/database.config");
+const ItServiceCategory = require("./itServiceCategory.model");
 
 const It_Service = sequelize.define(
   "It_Service",
@@ -28,6 +29,12 @@ const It_Service = sequelize.define(
       defaultValue: true,
       field: "is_active",
     },
+
+    itServiceCategoryId: {
+      type: DataTypes.BIGINT.UNSIGNED,
+      allowNull: true,
+      field: "it_service_category_id",
+    },
   },
   {
     tableName: "it_services",
@@ -35,5 +42,10 @@ const It_Service = sequelize.define(
     underscored: true,
   },
 );
+
+It_Service.belongsTo(ItServiceCategory, {
+  foreignKey: "itServiceCategoryId",
+  as: "category",
+});
 
 module.exports = It_Service;

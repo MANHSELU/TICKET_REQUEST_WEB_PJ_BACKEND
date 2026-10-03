@@ -1,5 +1,8 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../configs/database.config");
+const User = require("./users.model");
+const ItService = require("./itService.model");
+const TicketCategory = require("./ticketCategory.model");
 
 const Ticket = sequelize.define(
     "Ticket",
@@ -86,5 +89,20 @@ const Ticket = sequelize.define(
         underscored: true,
     }
 );
+
+Ticket.belongsTo(User, {
+    foreignKey: "requesterId",
+    as: "requester",
+});
+
+Ticket.belongsTo(ItService, {
+    foreignKey: "itServiceId",
+    as: "itService",
+});
+
+Ticket.belongsTo(TicketCategory, {
+    foreignKey: "ticketCategoryId",
+    as: "ticketCategory",
+});
 
 module.exports = Ticket;
