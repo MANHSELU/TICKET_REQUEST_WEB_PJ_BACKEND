@@ -6,7 +6,7 @@ const createTicketController = async (req, res) => {
         const { userId } = req.user;
         const { itServiceId, ticketCategoryId, title, description } = req.body;
         await validateCreateTicket(userId, itServiceId, ticketCategoryId, title, description);
-        const ticket = await createTicketService(userId, itServiceId, ticketCategoryId, title, description);
+        const ticket = await createTicketService(userId, itServiceId, ticketCategoryId, title, description, req.files);
         return res.status(201).json({ message: "Tạo yêu cầu hỗ trợ thành công", data: ticket });
     } catch (error) {
         const status = error.status || 500;
