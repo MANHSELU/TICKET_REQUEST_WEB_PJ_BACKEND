@@ -2,9 +2,14 @@ const Ticket = require("../../model/ticket.model");
 const ItService = require("../../model/itService.model");
 const TicketCategory = require("../../model/ticketCategory.model");
 const TicketMessage = require("../../model/ticketMessage.model");
+const TicketAttachment = require("../../model/ticketAttachment.model");
 
 const createTicket = async (data) => {
     return await Ticket.create(data);
+};
+
+const createAttachment = async (data) => {
+    return await TicketAttachment.create(data);
 };
 
 const findByRequesterId = async (requesterId) => {
@@ -12,7 +17,10 @@ const findByRequesterId = async (requesterId) => {
 };
 
 const findByIdAndRequesterId = async (ticketId, requesterId) => {
-    return await Ticket.findOne({ where: { id: ticketId, requesterId } });
+    return await Ticket.findOne({
+        where: { id: ticketId, requesterId },
+        include: { model: TicketAttachment, as: "attachments" },
+    });
 };
 
 const findAllItService = async () => {

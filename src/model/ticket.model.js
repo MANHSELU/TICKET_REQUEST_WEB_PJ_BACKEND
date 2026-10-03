@@ -3,6 +3,7 @@ const sequelize = require("../configs/database.config");
 const User = require("./users.model");
 const ItService = require("./itService.model");
 const TicketCategory = require("./ticketCategory.model");
+const TicketAttachment = require("./ticketAttachment.model");
 
 const Ticket = sequelize.define(
     "Ticket",
@@ -103,6 +104,11 @@ Ticket.belongsTo(ItService, {
 Ticket.belongsTo(TicketCategory, {
     foreignKey: "ticketCategoryId",
     as: "ticketCategory",
+});
+
+Ticket.hasMany(TicketAttachment, {
+    foreignKey: "ticketId",
+    as: "attachments",
 });
 
 module.exports = Ticket;

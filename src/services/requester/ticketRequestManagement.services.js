@@ -1,7 +1,8 @@
 const ticketRequestManagementRepository = require("../../repositories/requester/ticketRequestManagement.repository");
 const ticketCategoryRepository = require("../../repositories/admin/ticketCategoryManagement.repository");
+const { uploadTicketAttachment } = require("../upload/uploadImg.service");
 
-const createTicketService = async (requesterId, itServiceId, ticketCategoryId, title, description) => {
+const createTicketService = async (requesterId, itServiceId, ticketCategoryId, title, description, files = []) => {
     const category = await ticketCategoryRepository.findById(ticketCategoryId);
     if (!category) {
         throw { status: 404, message: "Không tìm thấy danh mục yêu cầu" };
@@ -14,6 +15,16 @@ const createTicketService = async (requesterId, itServiceId, ticketCategoryId, t
         description,
         priority: category.defaultPriority,
     });
+
+    for (const file of files) {
+        const fileUrl = await uploadTicketAttachment(file.buffer);
+        await ticketRequestManagementRepository.createAttachment({
+            ticketId: ticket.id,
+            fileUrl,
+            fileName: file.originalname,
+        });
+    };
+
     return ticket;
 };
 
