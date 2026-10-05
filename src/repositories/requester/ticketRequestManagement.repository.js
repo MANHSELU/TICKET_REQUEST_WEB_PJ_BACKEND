@@ -13,13 +13,24 @@ const createAttachment = async (data) => {
 };
 
 const findByRequesterId = async (requesterId) => {
-    return await Ticket.findAll({ where: { requesterId } });
+    return await Ticket.findAll({
+        where: { requesterId },
+        include: [
+            { model: ItService, as: "itService" },
+            { model: TicketCategory, as: "ticketCategory" },
+        ],
+        order: [["createdAt", "DESC"]],
+    });
 };
 
 const findByIdAndRequesterId = async (ticketId, requesterId) => {
     return await Ticket.findOne({
         where: { id: ticketId, requesterId },
-        include: { model: TicketAttachment, as: "attachments" },
+        include: [
+            { model: TicketAttachment, as: "attachments" },
+            { model: ItService, as: "itService" },
+            { model: TicketCategory, as: "ticketCategory" },
+        ],
     });
 };
 
@@ -42,4 +53,4 @@ const findMessage = async (ticketId) => {
     });
 };
 
-module.exports = { createTicket, findByRequesterId, findByIdAndRequesterId, findAllItService, findAllTicketCategory, sendMessage, findMessage }
+module.exports = { createTicket, createAttachment, findByRequesterId, findByIdAndRequesterId, findAllItService, findAllTicketCategory, sendMessage, findMessage }
