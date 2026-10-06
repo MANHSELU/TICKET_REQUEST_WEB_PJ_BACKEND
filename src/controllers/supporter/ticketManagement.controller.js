@@ -1,10 +1,21 @@
 const { validateTicketDetail, validateAcceptTicket, validateCloseTicket, validateSendMessage, validateFindMessage } = require("../../validations/supporter/ticketManagement.validation");
-const { findAllTicket, findTicketDetail, acceptTicket, closeTicket, sendMessage, findMessage } = require("../../services/supporter/ticketManagement.service");
+const { findAllTicket, findMyClosedTicket, findTicketDetail, acceptTicket, closeTicket, sendMessage, findMessage } = require("../../services/supporter/ticketManagement.service");
 
 const findAllTicketController = async (req, res) => {
     try {
         const tickets = await findAllTicket();
         return res.status(200).json({ message: "Lấy danh sách yêu cầu thành công", data: tickets });
+    } catch (error) {
+        const status = error.status || 500;
+        return res.status(status).json({ message: error.message || "Lỗi hệ thống" });
+    };
+};
+
+const findMyClosedTicketController = async (req, res) => {
+    try {
+        const { userId } = req.user;
+        const tickets = await findMyClosedTicket(userId);
+        return res.status(200).json({ message: "Lấy lịch sử xử lý thành công", data: tickets });
     } catch (error) {
         const status = error.status || 500;
         return res.status(status).json({ message: error.message || "Lỗi hệ thống" });
@@ -51,10 +62,10 @@ const closeTicketController = async (req, res) => {
 
 const sendMessageController = async (req, res) => {
     try {
-        const { senderId } = req.user;
+        const { userId } = req.user;
         const { ticketId, message } = req.body;
-        await validateSendMessage(ticketId, senderId, message);
-        await sendMessage(ticketId, senderId, message);
+        await validateSendMessage(ticketId, userId, message);
+        await sendMessage(ticketId, userId, message);
         return res.status(201).json({ message: "Gửi tin nhắn thành công" });
     } catch (error) {
         const status = error.status || 500;
@@ -75,4 +86,4 @@ const findMessageController = async (req, res) => {
     };
 };
 
-module.exports = { findAllTicketController, findTicketDetailController, acceptTicketController, closeTicketController, sendMessageController, findMessageController };
+module.exports = { findAllTicketController, findMyClosedTicketController, findTicketDetailController, acceptTicketController, closeTicketController, sendMessageController, findMessageController };

@@ -4,6 +4,10 @@ const findAllTicket = async () => {
     return await ticketManagementRepository.getAllTicket();
 };
 
+const findMyClosedTicket = async (assigneeId) => {
+    return await ticketManagementRepository.findClosedByAssigneeId(assigneeId);
+};
+
 const findTicketDetail = async (ticketId) => {
     const ticket = await ticketManagementRepository.findById(ticketId);
     if (!ticket) {
@@ -68,4 +72,4 @@ const findMessage = async (ticketId, senderId) => {
     return await ticketManagementRepository.findMessage(ticketId, senderId);
 };
 
-module.exports = { findAllTicket, findTicketDetail, acceptTicket, closeTicket, sendMessage, findMessage };
+module.exports = { findAllTicket, findMyClosedTicket, findTicketDetail, acceptTicket, closeTicket, sendMessage, findMessage };
